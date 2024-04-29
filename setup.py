@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-PYTHON_VERSION = "3.12.3"
+
 VIRTUAL_ENV_NAME = ".venv"
 
 def ambiente_virtual_existe():
@@ -68,6 +68,19 @@ def crear_gitignore():
             archivo.write("\n".join(contenido_gitignore))
         print("Archivo .gitignore creado.")
 
+def preguntar_cambiar_repositorio_remoto():
+    respuesta = input("¿Desea cambiar el repositorio remoto? (S/N): ").strip().upper()
+    return respuesta == "S"
+
+def cambiar_repositorio_remoto():
+    nueva_url = input("Ingrese la nueva URL del repositorio remoto: ").strip()
+    subprocess.run(["git", "remote", "set-url", "origin", nueva_url])
+    print("URL del repositorio remoto actualizada.")
+
+def desconectar_repositorio_remoto():
+    subprocess.run(["git", "remote", "rm", "origin"])
+    print("Repositorio remoto desconectado por seguridad.")
+
 if __name__ == "__main__":
     total_pasos = 5  # Número total de pasos
     paso_actual = 0  # Inicializar el paso actual
@@ -91,5 +104,12 @@ if __name__ == "__main__":
     crear_gitignore()
     paso_actual += 1
     print(f"Progreso: {paso_actual}/{total_pasos}")
+
+    # Preguntar al usuario si desea cambiar el repositorio remoto
+    if os.path.exists(".git"):
+        if preguntar_cambiar_repositorio_remoto():
+            cambiar_repositorio_remoto()
+        else:
+            desconectar_repositorio_remoto()
 
     print("Configuración completada.")

@@ -1,7 +1,7 @@
 @echo off
 
 :: Cambiar al directorio del repositorio clonado
-cd /d "C:\Users\Usuario\Repositorio"
+cd /d %~dp0
 
 :: Ejecutar el script de configuración (setup.py)
 echo Ejecutando script de configuración...
